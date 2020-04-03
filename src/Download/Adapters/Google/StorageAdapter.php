@@ -6,6 +6,7 @@ class StorageAdapter
 {
     private $client;
     private $bucket;
+    private $basePath;
 
     public function __construct()
     {
@@ -19,15 +20,29 @@ class StorageAdapter
         return $this;
     }
 
-    public function setBucket(string $bucket)
+    public function setBucket(string $bucket): StorageAdapter
     {
-        $this->bucket = $this->client->bucket('arquivei-dev-team');
+        $this->bucket = $this->client->bucket($bucket);
         return $this;
     }
 
-    public function signUrl(string $storagePath, int $expireSeconds = 45)
+    public function setBasePath(string $basePath): StorageAdapter
     {
-        $object = $this->bucket->object($storagePath);
+        $this->basePath = $basePath;
+        return $this;
+    }
+
+    protected function key(string $key): string
+    {
+        if (!is_null($this->basePath) && !empty($this->basePath) && strlen($this->basePath) > 0) {
+            return sprintf('%s/%s', $this->basePath, $key);
+        }
+        return $key;
+    }
+
+    public function signUrl(string $storagePath, int $expireSeconds = 45): string
+    {
+        $object = $this->bucket->object($this->key($storagePath));
         return $object->signedUrl(
             new \DateTime(sprintf('%d seconds', $expireSeconds)),
             [
