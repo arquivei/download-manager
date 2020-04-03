@@ -48,10 +48,11 @@ class Downloader
         }
     }
 
-    public function signObject(string $bucket, string $basePath, string $storagePath): string
+    public function signObject(string $bucket, string $basePath, string $storagePath, int $expireSeconds = 45): string
     {
         return $this->client
             ->setBucket($bucket)
-            ->signUrl($storagePath);
+            ->setBasePath($basePath)
+            ->signUrl($storagePath, $expireSeconds);
     }
 }
