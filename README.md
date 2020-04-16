@@ -30,7 +30,7 @@ O downloader é extremamente simples de ser instanciado e executado. Segue exemp
 o download de um objeto:
 
 ```php
-$bucket = 'arquivei-dev-team';
+$bucket = 'my-bucket';
 $basePath = 'files';
 $storagePath = 'my-company/my-file.xml';
 
@@ -41,7 +41,7 @@ $downloader->download($bucket, $basePath, $storagePath);
 Caso você queira obter apenas o link de download, ao invés de realizar o download do objeto diretamente, 
 basta assinar o objeto e ter o link publico como retorno:
 ```php
-$bucket = 'arquivei-dev-team';
+$bucket = 'my-bucket';
 $basePath = 'files';
 $storagePath = 'my-company/my-file.xml';
 $expireSeconds = 60;
